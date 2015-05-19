@@ -91,9 +91,8 @@ let humanReadableSize (size:int64) =
 
 let extractZip (zipfile, outdir:string) =
     let rec extractEntry (zip:ZipInputStream, current:ZipEntry) =
-        printfn "extracting %s (%s)" current.Name (zip.Length |> humanReadableSize)
-
         if current = null |> not then
+            printfn "extracting %s (%s)" current.Name (zip.Length |> humanReadableSize)
             match current.Name  with
                 | p when p = "AndroidManifest.xml" -> 
                     use memory = new MemoryStream()
