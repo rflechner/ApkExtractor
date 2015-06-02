@@ -1,0 +1,127 @@
+<h2><a name="Tools-in-fsx-files" class="anchor" href="#Tools-in-fsx-files">Tools in fsx files</a></h2>
+
+<p>This function scan a folder and displays the version code of each apk read in the compiled AndroidManifest</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 16)" onmouseover="showTip(event, 'fs12', 16)" class="f">displayApksVersions</span> <span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="i">path</span> <span class="o">=</span> 
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs14', 18)" onmouseover="showTip(event, 'fs14', 18)" class="i">apk</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs15', 19)" onmouseover="showTip(event, 'fs15', 19)" class="t">Directory</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 20)" onmouseover="showTip(event, 'fs16', 20)" class="f">GetFiles</span>(<span onmouseout="hideTip(event, 'fs13', 21)" onmouseover="showTip(event, 'fs13', 21)" class="i">path</span>, <span class="s">&quot;*.apk&quot;</span>) <span class="k">do</span>
+        <span onmouseout="hideTip(event, 'fs17', 22)" onmouseover="showTip(event, 'fs17', 22)" class="f">printfn</span> <span class="s">&quot;- apk: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs14', 23)" onmouseover="showTip(event, 'fs14', 23)" class="i">apk</span>
+        <span class="k">try</span>
+            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs18', 24)" onmouseover="showTip(event, 'fs18', 24)" class="f">getManifest</span> (<span onmouseout="hideTip(event, 'fs14', 25)" onmouseover="showTip(event, 'fs14', 25)" class="i">apk</span>) <span class="k">with</span>
+            | <span onmouseout="hideTip(event, 'fs19', 26)" onmouseover="showTip(event, 'fs19', 26)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs20', 27)" onmouseover="showTip(event, 'fs20', 27)" class="i">manifest</span> <span class="k">-&gt;</span> <span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 28)" onmouseover="showTip(event, 'fs21', 28)" class="i">vc</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 29)" onmouseover="showTip(event, 'fs20', 29)" class="i">manifest</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="f">Element</span>(<span class="s">&quot;manifest&quot;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 31)" onmouseover="showTip(event, 'fs23', 31)" class="t">XName</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs24', 32)" onmouseover="showTip(event, 'fs24', 32)" class="f">Get</span>)<span class="o">.</span><span class="f">Attributes</span>() <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 33)" onmouseover="showTip(event, 'fs25', 33)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs26', 34)" onmouseover="showTip(event, 'fs26', 34)" class="f">filter</span>(<span class="k">fun</span> <span onmouseout="hideTip(event, 'fs27', 35)" onmouseover="showTip(event, 'fs27', 35)" class="i">a</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 36)" onmouseover="showTip(event, 'fs27', 36)" class="i">a</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs28', 37)" onmouseover="showTip(event, 'fs28', 37)" class="i">Name</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs29', 38)" onmouseover="showTip(event, 'fs29', 38)" class="i">LocalName</span> <span class="o">=</span> <span class="s">&quot;versionCode&quot;</span>) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 39)" onmouseover="showTip(event, 'fs25', 39)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs30', 40)" onmouseover="showTip(event, 'fs30', 40)" class="f">exactlyOne</span>
+                               <span onmouseout="hideTip(event, 'fs17', 41)" onmouseover="showTip(event, 'fs17', 41)" class="f">printfn</span> <span class="s">&quot;- versionCode: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs21', 42)" onmouseover="showTip(event, 'fs21', 42)" class="i">vc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 43)" onmouseover="showTip(event, 'fs31', 43)" class="i">Value</span>
+            | <span onmouseout="hideTip(event, 'fs32', 44)" onmouseover="showTip(event, 'fs32', 44)" class="p">None</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs33', 45)" onmouseover="showTip(event, 'fs33', 45)" class="f">failwith</span> <span class="s">&quot;Cannot find manifest&quot;</span>
+        <span class="k">with</span> <span onmouseout="hideTip(event, 'fs34', 46)" onmouseover="showTip(event, 'fs34', 46)" class="i">e</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 47)" onmouseover="showTip(event, 'fs17', 47)" class="f">printfn</span> <span class="s">&quot;Error: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs34', 48)" onmouseover="showTip(event, 'fs34', 48)" class="i">e</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs35', 49)" onmouseover="showTip(event, 'fs35', 49)" class="i">Message</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<p>This function scan a folder and extracts each apk</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs36', 50)" onmouseover="showTip(event, 'fs36', 50)" class="f">extractAllApks</span> <span onmouseout="hideTip(event, 'fs13', 51)" onmouseover="showTip(event, 'fs13', 51)" class="i">path</span> <span class="o">=</span> 
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs14', 52)" onmouseover="showTip(event, 'fs14', 52)" class="i">apk</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs15', 53)" onmouseover="showTip(event, 'fs15', 53)" class="t">Directory</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 54)" onmouseover="showTip(event, 'fs16', 54)" class="f">GetFiles</span>(<span onmouseout="hideTip(event, 'fs13', 55)" onmouseover="showTip(event, 'fs13', 55)" class="i">path</span>, <span class="s">&quot;*.apk&quot;</span>) <span class="k">do</span>
+        <span onmouseout="hideTip(event, 'fs17', 56)" onmouseover="showTip(event, 'fs17', 56)" class="f">printfn</span> <span class="s">&quot;- apk: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs14', 57)" onmouseover="showTip(event, 'fs14', 57)" class="i">apk</span>
+        <span class="k">try</span>
+            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs18', 58)" onmouseover="showTip(event, 'fs18', 58)" class="f">getManifest</span> (<span onmouseout="hideTip(event, 'fs14', 59)" onmouseover="showTip(event, 'fs14', 59)" class="i">apk</span>) <span class="k">with</span>
+            | <span onmouseout="hideTip(event, 'fs19', 60)" onmouseover="showTip(event, 'fs19', 60)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs20', 61)" onmouseover="showTip(event, 'fs20', 61)" class="i">manifest</span> <span class="k">-&gt;</span> 
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 62)" onmouseover="showTip(event, 'fs21', 62)" class="i">vc</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 63)" onmouseover="showTip(event, 'fs20', 63)" class="i">manifest</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs22', 64)" onmouseover="showTip(event, 'fs22', 64)" class="f">Element</span>(<span class="s">&quot;manifest&quot;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 65)" onmouseover="showTip(event, 'fs23', 65)" class="t">XName</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs24', 66)" onmouseover="showTip(event, 'fs24', 66)" class="f">Get</span>)<span class="o">.</span><span class="f">Attributes</span>() <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 67)" onmouseover="showTip(event, 'fs25', 67)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs26', 68)" onmouseover="showTip(event, 'fs26', 68)" class="f">filter</span>(<span class="k">fun</span> <span onmouseout="hideTip(event, 'fs27', 69)" onmouseover="showTip(event, 'fs27', 69)" class="i">a</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 70)" onmouseover="showTip(event, 'fs27', 70)" class="i">a</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs28', 71)" onmouseover="showTip(event, 'fs28', 71)" class="i">Name</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs29', 72)" onmouseover="showTip(event, 'fs29', 72)" class="i">LocalName</span> <span class="o">=</span> <span class="s">&quot;versionCode&quot;</span>) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 73)" onmouseover="showTip(event, 'fs25', 73)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs30', 74)" onmouseover="showTip(event, 'fs30', 74)" class="f">exactlyOne</span>
+                <span onmouseout="hideTip(event, 'fs17', 75)" onmouseover="showTip(event, 'fs17', 75)" class="f">printfn</span> <span class="s">&quot;- versionCode: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs21', 76)" onmouseover="showTip(event, 'fs21', 76)" class="i">vc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 77)" onmouseover="showTip(event, 'fs31', 77)" class="i">Value</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs37', 78)" onmouseover="showTip(event, 'fs37', 78)" class="i">output</span> <span class="o">=</span> (<span onmouseout="hideTip(event, 'fs38', 79)" onmouseover="showTip(event, 'fs38', 79)" class="t">Path</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs39', 80)" onmouseover="showTip(event, 'fs39', 80)" class="f">Combine</span>(<span onmouseout="hideTip(event, 'fs13', 81)" onmouseover="showTip(event, 'fs13', 81)" class="i">path</span>, <span onmouseout="hideTip(event, 'fs14', 82)" onmouseover="showTip(event, 'fs14', 82)" class="i">apk</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs38', 83)" onmouseover="showTip(event, 'fs38', 83)" class="t">Path</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs40', 84)" onmouseover="showTip(event, 'fs40', 84)" class="f">GetFileNameWithoutExtension</span>)) <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs21', 85)" onmouseover="showTip(event, 'fs21', 85)" class="i">vc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 86)" onmouseover="showTip(event, 'fs31', 86)" class="i">Value</span>
+                <span onmouseout="hideTip(event, 'fs17', 87)" onmouseover="showTip(event, 'fs17', 87)" class="f">printfn</span> <span class="s">&quot;- output: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs37', 88)" onmouseover="showTip(event, 'fs37', 88)" class="i">output</span>
+                <span class="k">if</span> <span onmouseout="hideTip(event, 'fs37', 89)" onmouseover="showTip(event, 'fs37', 89)" class="i">output</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 90)" onmouseover="showTip(event, 'fs15', 90)" class="t">Directory</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs41', 91)" onmouseover="showTip(event, 'fs41', 91)" class="f">Exists</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs42', 92)" onmouseover="showTip(event, 'fs42', 92)" class="f">not</span> <span class="k">then</span>
+                    <span onmouseout="hideTip(event, 'fs37', 93)" onmouseover="showTip(event, 'fs37', 93)" class="i">output</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 94)" onmouseover="showTip(event, 'fs15', 94)" class="t">Directory</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs43', 95)" onmouseover="showTip(event, 'fs43', 95)" class="f">CreateDirectory</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs44', 96)" onmouseover="showTip(event, 'fs44', 96)" class="f">ignore</span>
+                <span onmouseout="hideTip(event, 'fs45', 97)" onmouseover="showTip(event, 'fs45', 97)" class="f">extractZip</span>(<span onmouseout="hideTip(event, 'fs14', 98)" onmouseover="showTip(event, 'fs14', 98)" class="i">apk</span>, <span onmouseout="hideTip(event, 'fs37', 99)" onmouseover="showTip(event, 'fs37', 99)" class="i">output</span>, <span class="k">false</span>)
+            | <span onmouseout="hideTip(event, 'fs32', 100)" onmouseover="showTip(event, 'fs32', 100)" class="p">None</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 101)" onmouseover="showTip(event, 'fs17', 101)" class="f">printfn</span> <span class="s">&quot;Cannot find manifest&quot;</span>
+            
+        <span class="k">with</span> <span onmouseout="hideTip(event, 'fs34', 102)" onmouseover="showTip(event, 'fs34', 102)" class="i">e</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 103)" onmouseover="showTip(event, 'fs17', 103)" class="f">printfn</span> <span class="s">&quot;Error: </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs34', 104)" onmouseover="showTip(event, 'fs34', 104)" class="i">e</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs35', 105)" onmouseover="showTip(event, 'fs35', 105)" class="i">Message</span>
+</pre>
+</td>
+</tr>
+</table>
+
+
+<div class="tip" id="fs1">namespace System</div>
+<div class="tip" id="fs2">namespace System.Xml</div>
+<div class="tip" id="fs3">namespace System.Xml.Linq</div>
+<div class="tip" id="fs4">namespace System.IO</div>
+<div class="tip" id="fs5">namespace System.Text</div>
+<div class="tip" id="fs6">namespace ICSharpCode</div>
+<div class="tip" id="fs7">namespace ICSharpCode.SharpZipLib</div>
+<div class="tip" id="fs8">namespace ICSharpCode.SharpZipLib.Zip</div>
+<div class="tip" id="fs9">namespace Nessos</div>
+<div class="tip" id="fs10">namespace Nessos.UnionArgParser</div>
+<div class="tip" id="fs11">module ApkHelpers</div>
+<div class="tip" id="fs12">val displayApksVersions : path:string -&gt; unit<br /><br />Full name: Tool.displayApksVersions</div>
+<div class="tip" id="fs13">val path : string</div>
+<div class="tip" id="fs14">val apk : string</div>
+<div class="tip" id="fs15">type Directory =<br />&#160;&#160;static member CreateDirectory : path:string -&gt; DirectoryInfo + 1 overload<br />&#160;&#160;static member Delete : path:string -&gt; unit + 1 overload<br />&#160;&#160;static member EnumerateDirectories : path:string -&gt; IEnumerable&lt;string&gt; + 2 overloads<br />&#160;&#160;static member EnumerateFileSystemEntries : path:string -&gt; IEnumerable&lt;string&gt; + 2 overloads<br />&#160;&#160;static member EnumerateFiles : path:string -&gt; IEnumerable&lt;string&gt; + 2 overloads<br />&#160;&#160;static member Exists : path:string -&gt; bool<br />&#160;&#160;static member GetAccessControl : path:string -&gt; DirectorySecurity + 1 overload<br />&#160;&#160;static member GetCreationTime : path:string -&gt; DateTime<br />&#160;&#160;static member GetCreationTimeUtc : path:string -&gt; DateTime<br />&#160;&#160;static member GetCurrentDirectory : unit -&gt; string<br />&#160;&#160;...<br /><br />Full name: System.IO.Directory</div>
+<div class="tip" id="fs16">Directory.GetFiles(path: string) : string []<br />Directory.GetFiles(path: string, searchPattern: string) : string []<br />Directory.GetFiles(path: string, searchPattern: string, searchOption: SearchOption) : string []</div>
+<div class="tip" id="fs17">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+<div class="tip" id="fs18">val getManifest : filepath:string -&gt; XDocument option<br /><br />Full name: ApkHelpers.getManifest</div>
+<div class="tip" id="fs19">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs20">val manifest : XDocument</div>
+<div class="tip" id="fs21">val vc : XAttribute</div>
+<div class="tip" id="fs22">XContainer.Element(name: XName) : XElement</div>
+<div class="tip" id="fs23">type XName =<br />&#160;&#160;member Equals : obj:obj -&gt; bool<br />&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;member LocalName : string<br />&#160;&#160;member Namespace : XNamespace<br />&#160;&#160;member NamespaceName : string<br />&#160;&#160;member ToString : unit -&gt; string<br />&#160;&#160;static member Get : expandedName:string -&gt; XName + 1 overload<br /><br />Full name: System.Xml.Linq.XName</div>
+<div class="tip" id="fs24">XName.Get(expandedName: string) : XName<br />XName.Get(localName: string, namespaceName: string) : XName</div>
+<div class="tip" id="fs25">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs26">val filter : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.filter</div>
+<div class="tip" id="fs27">val a : XAttribute</div>
+<div class="tip" id="fs28">property XAttribute.Name: XName</div>
+<div class="tip" id="fs29">property XName.LocalName: string</div>
+<div class="tip" id="fs30">val exactlyOne : source:seq&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.Seq.exactlyOne</div>
+<div class="tip" id="fs31">property XAttribute.Value: string</div>
+<div class="tip" id="fs32">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs33">val failwith : message:string -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.Operators.failwith</div>
+<div class="tip" id="fs34">val e : exn</div>
+<div class="tip" id="fs35">property System.Exception.Message: string</div>
+<div class="tip" id="fs36">val extractAllApks : path:string -&gt; unit<br /><br />Full name: Tool.extractAllApks</div>
+<div class="tip" id="fs37">val output : string</div>
+<div class="tip" id="fs38">type Path =<br />&#160;&#160;static val DirectorySeparatorChar : char<br />&#160;&#160;static val AltDirectorySeparatorChar : char<br />&#160;&#160;static val VolumeSeparatorChar : char<br />&#160;&#160;static val InvalidPathChars : char[]<br />&#160;&#160;static val PathSeparator : char<br />&#160;&#160;static member ChangeExtension : path:string * extension:string -&gt; string<br />&#160;&#160;static member Combine : params paths:string[] -&gt; string + 3 overloads<br />&#160;&#160;static member GetDirectoryName : path:string -&gt; string<br />&#160;&#160;static member GetExtension : path:string -&gt; string<br />&#160;&#160;static member GetFileName : path:string -&gt; string<br />&#160;&#160;...<br /><br />Full name: System.IO.Path</div>
+<div class="tip" id="fs39">Path.Combine(params paths: string []) : string<br />Path.Combine(path1: string, path2: string) : string<br />Path.Combine(path1: string, path2: string, path3: string) : string<br />Path.Combine(path1: string, path2: string, path3: string, path4: string) : string</div>
+<div class="tip" id="fs40">Path.GetFileNameWithoutExtension(path: string) : string</div>
+<div class="tip" id="fs41">Directory.Exists(path: string) : bool</div>
+<div class="tip" id="fs42">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
+<div class="tip" id="fs43">Directory.CreateDirectory(path: string) : DirectoryInfo<br />Directory.CreateDirectory(path: string, directorySecurity: System.Security.AccessControl.DirectorySecurity) : DirectoryInfo</div>
+<div class="tip" id="fs44">val ignore : value:&#39;T -&gt; unit<br /><br />Full name: Microsoft.FSharp.Core.Operators.ignore</div>
+<div class="tip" id="fs45">val extractZip : zipfile:string * outdir:string * verbose:bool -&gt; unit<br /><br />Full name: ApkHelpers.extractZip</div>
+<div class="tip" id="fs46">val path : string<br /><br />Full name: Tool.path</div>
+<div class="tip" id="fs47">namespace FSharp</div>
+<div class="tip" id="fs48">namespace FSharp.Literate</div>
+<div class="tip" id="fs49"></div>
+<div class="tip" id="fs50">namespace FSharp.Markdown</div>
+<div class="tip" id="fs51">static member Literate.ProcessDirectory : inputDirectory:string * ?templateFile:string * ?outputDirectory:string * ?format:OutputKind * ?formatAgent:FSharp.CodeFormat.CodeFormatAgent * ?prefix:string * ?compilerOptions:string * ?lineNumbers:bool * ?references:bool * ?fsiEvaluator:IFsiEvaluator * ?replacements:(string * string) list * ?includeSource:bool * ?layoutRoots:string list * ?generateAnchors:bool * ?assemblyReferences:string list * ?processRecursive:bool * ?customizeDocument:(ProcessingContext -&gt; LiterateDocument -&gt; LiterateDocument) -&gt; unit</div>
+<div class="tip" id="fs52">union case OutputKind.Html: OutputKind</div>
